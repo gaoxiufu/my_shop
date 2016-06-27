@@ -177,4 +177,5 @@ class ArticleModel extends Model
         $content_model = M('ArticleContent');
         $content_model->delete($id);
     }
+
 }

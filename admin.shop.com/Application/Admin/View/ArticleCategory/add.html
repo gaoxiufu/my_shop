@@ -67,8 +67,8 @@
 <js href="__JS__/jquery.min.js"/>
 <script>
     $(function(){
-        $('.status').val([{$status}]);
-        $('.help').val([{$is_help}]);
+        $('.status').val([{$status|default=1}]);
+        $('.help').val([{$is_help|default=1}]);
     });
 
 </script>

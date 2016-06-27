@@ -55,7 +55,7 @@ class BrandController extends Controller
             if ($this->model->create() === false) {
                 $this->error(getError($this->model));
             }
-
+dump($this->model->data());
             // 添加数据
             if ($this->model->add() === false) {
                 $this->error(getError($this->model));
