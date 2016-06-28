@@ -4,12 +4,13 @@ define('BASE_URL', 'http://admin.shop.com/');
 return array(
     // 定义常用文件引入路径
     'TMPL_PARSE_STRING' => [
-        '__CSS__'       => BASE_URL . '/Public/css', // css路径
-        '__JS__'        => BASE_URL . '/Public/js', // js路径
-        '__IMG__'       => BASE_URL . '/Public/images', // 图片路径
-        '__UPLOADIFY__' => BASE_URL . '/Public/ext/uploadify', // uploadify插件路径
-        '__LAYER__'     => BASE_URL . '/Public/ext/layer', // layer插件路径
-        '__ZTREE__'     => BASE_URL . '/Public/ext/ztree', // ztree插件路径
+        '__CSS__'       => BASE_URL . 'Public/css', // css路径
+        '__JS__'        => BASE_URL . 'Public/js', // js路径
+        '__IMG__'       => BASE_URL . 'Public/images', // 图片路径
+        '__UPLOADIFY__' => BASE_URL . 'Public/ext/uploadify', // uploadify插件路径
+        '__LAYER__'     => BASE_URL . 'Public/ext/layer', // layer插件路径
+        '__ZTREE__'     => BASE_URL . 'Public/ext/ztree', // ztree插件路径
+        '__TREEGRID__'  => BASE_URL . 'Public/ext/treegrid', // ztree插件路径
     ],
 
     //'配置项'=>'配置值'
@@ -36,12 +37,12 @@ return array(
     'DB_SLAVE_NO'       => '', // 指定从服务器序号
 
     // 图片上传配置
-    'UPLOAD_SETTING'     => [
+    'UPLOAD_SETTING'    => [
         'mimes'        => array(), //允许上传的文件MiMe类型
         'maxSize'      => 0, //上传的文件大小限制 (0-不做限制)
         'exts'         => array(), //允许上传的文件后缀
         'autoSub'      => true, //自动子目录保存文件
-        'subName'      => array('date', 'Y-m'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
+        'subName'      => array('date', 'Y-m-d'), //子目录创建方式，[0]-函数名，[1]-参数，多个参数使用数组
         'rootPath'     => ROOT_PATH, //保存根路径
         'savePath'     => 'uploads/', //保存路径
         'saveName'     => array('uniqid', ''), //上传文件命名规则，[0]-函数名，[1]-参数，多个参数使用数组
@@ -49,7 +50,7 @@ return array(
         'replace'      => false, //存在同名是否覆盖
         'hash'         => true, //是否生成hash编码
         'callback'     => false, //检测文件是否存在回调，如果存在返回文件信息数组
-        'driver'       => 'Qiniu', // 文件上传驱动
+        // 'driver'       => 'Qiniu', // 文件上传驱动
         'driverConfig' => array(), // 上传驱动配置
         // 七牛配置
         'driverConfig' => array(

@@ -42,7 +42,7 @@
                 <td>
                     <input type="hidden" id="parent_id" name="parent_id">
                     <input type='text' disabled='disabled' id='parent_name' style="padding-left:1em;"/>
-                    <ul id="goods_categories" class="ztree"></ul>
+                    <ul id="goods" class="ztree"></ul>
                 </td>
             </tr>
             <tr>
@@ -61,7 +61,7 @@
 
         </table>
         <div class="button-div">
-            <input type="hidden" value="{$id}" name="id">
+            <input type="hidden" value="{$row.id}" name="id">
             <input type="submit" value=" 确定 "/>
             <input type="reset" value=" 重置 "/>
         </div>
@@ -93,22 +93,21 @@
 
     };
 
-
-    var goods_categories = {$goods_categories};
+    var goods = {$goods};
     $(function () {
         // 商品回显状态
         $('.status').val([{$status |default= 1}]);
         // 初始化ztree插件
-        var goods_category_ztree = $.fn.zTree.init($("#goods_categories"), setting, goods_categories);
+        var goodsztree = $.fn.zTree.init($("#goods"), setting, goods);
         // 展开所有节点
-        goods_category_ztree.expandAll(true);
+        goodsztree.expandAll(true);
         // 回显父级名称
-    <present name="row">
+    <present name="row">  // 判断当前场景
     //获取父级分类在ztree中的节点
-    var parent_node = goods_category_ztree.getNodeByParam('id',{$row.parent_id});
-    goods_category_ztree.selectNode(parent_node);
-    $('#parent_id').val(parent_node.id);
-    $('#parent_name').val(parent_node.name);
+    var parent_node = goodsztree.getNodeByParam('id',{$row.parent_id});
+    goodsztree.selectNode(parent_node);
+    $('#parent_id').val(parent_node.id); // 父级ID
+    $('#parent_name').val(parent_node.name); //父级名称
     </present>
 
     });
