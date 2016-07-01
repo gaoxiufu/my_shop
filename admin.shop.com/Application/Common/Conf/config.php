@@ -10,7 +10,8 @@ return array(
         '__UPLOADIFY__' => BASE_URL . 'Public/ext/uploadify', // uploadify插件路径
         '__LAYER__'     => BASE_URL . 'Public/ext/layer', // layer插件路径
         '__ZTREE__'     => BASE_URL . 'Public/ext/ztree', // ztree插件路径
-        '__TREEGRID__'  => BASE_URL . 'Public/ext/treegrid', // ztree插件路径
+        '__TREEGRID__'  => BASE_URL . 'Public/ext/treegrid', // treegrid插件路径
+        '__UEDITOR__'   => BASE_URL . 'Public/ext/ueditor', // ueditor插件路径
     ],
 
     //'配置项'=>'配置值'
@@ -61,5 +62,9 @@ return array(
             'timeout'   => 300, //超时时间
         ),
     ],
-
+    //分页相关的配置
+    'PAGE_SETTING'=>[
+        'PAGE_SIZE'=>5,
+        'PAGE_THEME'=>'%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%',
+    ],
 );

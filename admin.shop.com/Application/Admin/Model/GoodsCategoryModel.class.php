@@ -40,7 +40,6 @@ class GoodsCategoryModel extends Model
      */
     public function addCategory()
     {
-
         // 删除主键字段
         unset($this->data[$this->getPk()]);
         // 创建ORM对象

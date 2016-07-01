@@ -154,7 +154,7 @@ class MysqlLogic implements DbMysql
     }
 
     /**
-     * 返回rgth字段最大的值
+     * 返回节点一个字段最大的值
      * @param string $sql
      * @param array $args
      * @return mixed
@@ -179,7 +179,6 @@ class MysqlLogic implements DbMysql
         $row = M()->query($sql);
         // 取出第一行数据
         return array_shift($row[0]);
-//        return array_shift($row);
     }
 
 

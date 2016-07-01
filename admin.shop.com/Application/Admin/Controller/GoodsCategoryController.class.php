@@ -92,6 +92,8 @@ class GoodsCategoryController extends Controller
 
     }
 
+
+
     /**
      * 在视图上增加一个顶级分类
      */

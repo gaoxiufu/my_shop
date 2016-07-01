@@ -40,5 +40,13 @@ class SupplierModel extends Model
         return compact(['rows', 'html']);
     }
 
+    /**
+     * 展示下拉数据
+     * @return mixed
+     */
+    public function getList()
+    {
+        return $this->where(['status' => ['gt', 0]])->select();
+    }
 
 }
