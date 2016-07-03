@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2016/7/1
- * Time: 21:45
+ * Date: 2016/7/2
+ * Time: 12:57
  */
 
 namespace Admin\Controller;
@@ -11,31 +11,37 @@ namespace Admin\Controller;
 
 use Think\Controller;
 
-class PermissionController extends Controller
+class RoleController extends Controller
 {
     /**
      * 自动创建model对象
-     * @var \Admin\Model\PermissionModel
+     * @var \Admin\Model\RoleModel
      */
     private $model = null;
 
     protected function _initialize()
     {
-        $this->model = D('Permission');
+        $this->model = D('Role');
     }
 
     /**
-     * 权限列表展示
+     * 展示角色列表
      */
     public function index()
     {
-        $rows = $this->model->getList();
-        $this->assign('rows', $rows);
+        // 获取模糊搜索条件
+        $name = I('get.name');
+        $cond = [];
+        if ($name) {
+            $cond['name'] = ['like', '%' . $name . '%'];
+        }
+        $rows = $this->model->getPageList($cond);
+        $this->assign($rows);
         $this->display();
     }
 
     /**
-     * 新增权限
+     * 新增角色
      */
     public function add()
     {
@@ -43,59 +49,53 @@ class PermissionController extends Controller
             if ($this->model->create() === false) {
                 $this->error(getError($this->model));
             }
-            if ($this->model->addPermission()===false) {
+            if ($this->model->addRole() === false) {
                 $this->error(getError($this->model));
-            }else{
-                $this->success('添加成功', U('index'));
             }
-
+            $this->success('添加成功', U('index'));
         } else {
+            // 获取权限数据
             $this->load_data();
             $this->display();
         }
-
     }
 
     /**
-     * 修改权限
-     * @param $id
+     *删除权限.并同时删除角色关联
      */
     public function edit($id)
     {
-        if(IS_POST){
-            // 收集数据
+        if (IS_POST) {
+            // 获取数据
             if ($this->model->create() === false) {
                 $this->error(getError($this->model));
             }
-            // 保存数据
-            if ($this->model->savePermission($id) === false) {
+            // 修改数据
+            if ($this->model->saveRoleInfo() === false) {
                 $this->error(getError($this->model));
             }
-
             $this->success('修改成功', U('index'));
-        }else{
-            // 获取数据
-            $row = $this->model->find($id);
-            // 传送数据
-            $this->assign('row',$row);
-            // json字符串,给ztree使用
+
+        } else {
+            // 获取回显数据
+            $row = $this->model->getPermissionInfo($id);
+            $this->assign('row', $row);
             $this->load_data();
             $this->display('add');
         }
+
     }
 
     /**
-     * 删除权限
+     * 删除角色
      * @param $id
      */
     public function remove($id)
     {
-        if($this->model->deletePermission($id) === false){
+        if($this->model->deleteRole($id)===false){
             $this->error(getError($this->model));
         }
-        //跳转
-        $this->success('删除成功', U('index'));
-
+        $this->success('删除成功',U('index'));
     }
 
     /**
@@ -104,9 +104,8 @@ class PermissionController extends Controller
     public function load_data()
     {
         // 获取权限列表,前端使用ztree展示所以转换成json数据
-        $permissions = $this->model->getList();
-        array_unshift($permissions, ['id' => 0, 'name' => '顶级权限', 'parent_id' => null]);
+        $permission_model = D('Permission');
+        $permissions = $permission_model->getList();
         $this->assign('permissions', json_encode($permissions));
     }
-
 }

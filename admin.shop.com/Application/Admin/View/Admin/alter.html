@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN'
+        'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+    <title>ECSHOP 管理中心 - 重置密码 </title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <link href='__CSS__/general.css' rel='stylesheet' type='text/css'/>
+    <link href='__CSS__/main.css' rel='stylesheet' type='text/css'/>
+    <link rel='stylesheet' href='__ZTREE__/css/zTreeStyle/zTreeStyle.css' type='text/css'/>
+    <style type='text/css'>
+        ul.ztree {
+            margin-top: 10px;
+            border: 1px solid #617775;
+            background: #f0f6e4;
+            width: 220px;
+            overflow-y: scroll;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>
+    <span class='action-span'><a href='{:U('index')}'>管理员列表</a></span>
+    <span class='action-span1'><a href='#'>ECSHOP 管理中心</a></span>
+    <span id='search_id' class='action-span1'> - 重置密码 </span>
+</h1>
+
+<div style='clear:both'></div>
+<div class='main-div'>
+    <form method='post' action='{:U()}' enctype='multipart/form-data'>
+        <table cellspacing='1' cellpadding='3' width='100%'>
+            <tr>
+                <td class='label'>管理员名称</td>
+                <td>
+                        <input type='text' disabled='disabled' name='username' maxlength='60' value='{$row.username}'/>
+                </td>
+            </tr>
+
+            <tr>
+                <td class='label'>邮箱</td>
+                <td>
+                    <present name='row'>
+                        <input type='text' disabled='disabled' maxlength='60' value='{$row.email}'/>
+                        <else/>
+                        <input type='text' name='email'/>
+                    </present>
+                </td>
+            </tr>
+            <tr>
+                <td class='label'>新密码</td>
+                <td>
+                    <input type='password' name='password' maxlength='60' size='' value='' id='pwd'/>
+                </td>
+            </tr>
+            <td class='label'>随机密码</td>
+            <td>
+                <input type='text' disabled='disabled' name='password' maxlength='60' size='' value='' id='pwd1'/>
+                <input type='button' id='button' value=' 随机生成'/>
+            </td>
+            </tr>
+            <tr>
+                <td colspan='2' align='center'><br/>
+                    <input type='hidden' name='id' value='{$row.id}'/>
+                    <input type='submit' class='button' value=' 确定 '/>
+                    <input type='reset' class='button' value=' 重置 '/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type='text/javascript' charset='utf-8' src='__UEDITOR__/my.config.js'></script>
+<script type='text/javascript' charset='utf-8' src='__UEDITOR__/ueditor.all.min.js'></script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type='text/javascript' charset='utf-8' src='__UEDITOR__/lang/zh-cn/zh-cn.js'></script>
+<script type='text/javascript' src='__JS__/jquery.min.js'></script>
+<script type='text/javascript' src='__ZTREE__/js/jquery.ztree.core.js'></script>
+<script type='text/javascript' src='__ZTREE__/js/jquery.ztree.excheck.js'></script>
+<script>
+    $('#button').click(function(){
+        // 生成随机6位数密码
+        function getRandomString(len) {
+            len = len || 32;
+            var $chars = 'abcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
+            var maxPos = $chars.length;
+            var pwd = '';
+            for (i = 0; i < len; i++) {
+                pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+            }
+            return pwd;
+        }
+       var  pwd=getRandomString(6)
+       // 将随机密码现在input框
+        $('#pwd').val(pwd);
+        $('#pwd1').val(pwd);
+
+    });
+
+</script>
+</body>
+</html>
