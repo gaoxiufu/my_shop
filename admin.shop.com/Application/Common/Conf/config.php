@@ -67,4 +67,6 @@ return array(
         'PAGE_SIZE'=>5,
         'PAGE_THEME'=>'%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%',
     ],
+    // 设置cookie前缀
+    'COOKIE_PREFIX'=>'admin_shop_com_',
 );

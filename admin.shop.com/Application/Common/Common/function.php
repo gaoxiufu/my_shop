@@ -56,7 +56,7 @@ function array_select(array $data, $name_filed = 'name', $value_filed = 'id', $n
 /**
  * 加盐加密
  * @param $password 原密码
- * @param $salt     堰
+ * @param $salt     盐
  * @return string 字符串
  */
 function password_salt($password, $salt)

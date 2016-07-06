@@ -59,11 +59,15 @@ class MenuModel extends Model
                 'permission_id' => $permission_id,
             ];
         }
-        if ($menu_permission_model->addAll($data) === false) {
-            $this->error = '新增菜单关联失败';
-            $this->rollback(); // 回滚事务
-            return false;
+        if (!empty($data)) {
+            if ($menu_permission_model->addAll($data) === false) {
+                $this->error = '新增菜单关联失败';
+                $this->rollback(); // 回滚事务
+                return false;
+            }
         }
+
+
         // 提交事务
         $this->commit();
         return true;
@@ -135,6 +139,7 @@ class MenuModel extends Model
                 'permission_id' => $permission_id,
             ];
         }
+//        dump($data);exit;
         if ($menu_permission_model->addAll($data) === false) {
             $this->error = '更新关联数据失败';
             $this->rollback(); // 回滚事务
@@ -152,7 +157,8 @@ class MenuModel extends Model
      * @param $id
      * @return bool
      */
-    public function deleteMenu($id){
+    public function deleteMenu($id)
+    {
         // 开启事务
         $this->startTrans();
         // 获取后代权限
@@ -184,7 +190,33 @@ class MenuModel extends Model
         $this->commit();
         return true;
 
-
     }
+
+    /**
+     * 获取菜单名称和路径
+     * @return array
+     */
+    public function getMenuList()
+    {
+        // 如果是超级管理员,就可以看到所有的菜单
+        $userinfo = session('USERINFO');
+        if ($userinfo['username'] == 'admin') {
+            // 获取用户菜单的id
+            $menus = $this->distinct(true)->field('id,parent_id,name,path')->alias('m')->join('__MENU_PERMISSION__ as mp ON mp.menu_id=m.id')->select();
+        } else {
+            // 获取用户权限id
+            $pids =  session('PERMISSION_ID');
+
+            // 获取用户菜单的id
+            if ($pids) {
+                $menus = $this->distinct(true)->field('id,parent_id,name,path')->alias('m')->join('__MENU_PERMISSION__ as mp ON mp.menu_id=m.id')->where(['permission_id' => ['in', $pids]])->select();
+            } else {
+                $menus = [];
+            }
+        }
+        //获取菜单信息
+        return $menus;
+    }
+
 
 }

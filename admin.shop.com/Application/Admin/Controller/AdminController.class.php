@@ -47,7 +47,7 @@ class AdminController extends Controller
     {
         if (IS_POST) {
             // 获取数据
-            if ($this->model->create() === false) {
+            if ($this->model->create('', 'add') === false) {
                 $this->error(getError($this->model));
             }
             // 新增数据
@@ -88,6 +88,10 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * 删除用户
+     * @param $id
+     */
     public function remove($id)
     {
         if ($this->model->deleteAdmin($id) === false) {
@@ -112,24 +116,55 @@ class AdminController extends Controller
     /**
      * 重置密码
      */
-    public function alter($id)
+    public function alter()
     {
+        // 获取session中的数据
+        $userinfo=session('USERINFO');
         if (IS_POST) {
             // 获取数据
             if ($this->model->create() === false) {
                 $this->error(getError($this->model));
             }
             // 新增数据
-            if (($password = $this->model->savePassword($id))=== false) {
+            if (($password = $this->model->savePassword($userinfo['id'])) === false) {
                 $this->error(getError($this->model));
             }
-            $this->success('密码修改成功,您的新密码是  '.$password, U('index'),5);
+            $this->success('密码修改成功,您的新密码是  ' . $password, U('index'), 5);
         } else {
             // 获取管理员基本数据
-            $row = $this->model->find($id);
+            $row = $this->model->find($userinfo['id']);
             $this->assign('row', $row);
             $this->display();
         }
     }
+
+    /**
+     * 用户登陆
+     */
+    public function login()
+    {
+        if (IS_POST) {
+            if ($this->model->create() === false) {
+                $this->error(getError($this->model));
+            }
+            if ($this->model->adminLogin() === false) {
+                $this->error(getError($this->model));
+            }
+            $this->success('登陆成功', U('Index/index'));
+        } else {
+            $this->display();
+        }
+    }
+
+    /**
+     * 用户退出
+     */
+    public function logout()
+    {
+        session(null);
+        cookie(null);
+        $this->success('退出成功', U('login'));
+    }
+
 
 }

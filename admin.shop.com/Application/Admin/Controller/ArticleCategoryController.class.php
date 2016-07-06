@@ -25,7 +25,7 @@ class ArticleCategoryController extends Controller
     }
 
     /**
-     * 品牌信息列表展示
+     * 文章信息列表展示
      * 1.模糊搜索
      * 2.分页
      */
