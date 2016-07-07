@@ -166,7 +166,7 @@ class MysqlLogic implements DbMysql
         // 获取sql语句.(array_shift函数弹出一个数据)
         $sql = array_shift($args);
 
-        // 将sql语句 用正则表达式分.
+        // 将sql语句 用正则表达式分隔.
         $rows = preg_split('/\?[FTN]/', $sql);
         // 删除最后一个元素.(array_pop弹出最后一个而数据)
         array_pop($rows);

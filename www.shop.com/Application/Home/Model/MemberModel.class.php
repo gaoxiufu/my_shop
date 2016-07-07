@@ -39,7 +39,7 @@ class MemberModel extends Model
         ['add_time', NOW_TIME],
         ['salt', '\Org\Util\String::randString', self::MODEL_INSERT, 'function'],
         ['user_token', '\Org\Util\String::randString', self::MODEL_INSERT, 'function', 32],
-        ['status', 0],//没有通过邮件验证的账号是禁用账户
+        ['status', 0],// 状态0表示未激活
     ];
 
 
@@ -73,6 +73,7 @@ class MemberModel extends Model
      * 新增用户
      * 密码加盐加密
      * 设置令牌
+     * 邮件激活
      */
     public function addMember()
     {
@@ -85,7 +86,7 @@ class MemberModel extends Model
 
         //发送激活邮件
         $url = U('Member/active',['email'=>$email,'user_token'=>$user_token],true,true);
-        $subject = '欢迎注册啊咿呀哟母婴商城';
+        $subject = '欢迎注册啊咿呀哟';
         $content = '欢迎您注册我们的网站,请点击<a href="'.$url.'">链接</a>激活账号.如果无法点击,请复制以下链接粘贴到浏览器窗口打开!<br />' . $url;
 
         $rst = sendMail($email,$subject,$content);
