@@ -54,7 +54,7 @@ class CheckPermissionBehavior extends Behavior
             }
 
             if (!in_array($rul, $urls)) {
-                header('Content-Type: text/html;charset=utf-8');
+//                header('Content-Type: text/html;charset=utf-8');
                 echo '<script type="text/javascript">top.location.href="' . U('Admin/Admin/login') . '"</script>';
 //               redirect(U('Admin/Admin/login'),2,'无权访问');
             }
