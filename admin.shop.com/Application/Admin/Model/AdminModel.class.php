@@ -308,7 +308,6 @@ class AdminModel extends Model
         // 自动登陆后 删除历史token数据
         $admin_token_model->delete($data['admin_id']);
 
-       // dump($data);
         // 重新生成cookie数据
         $data = [
             'admin_id' => $data['admin_id'],

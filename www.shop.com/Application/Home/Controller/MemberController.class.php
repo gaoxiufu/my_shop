@@ -31,7 +31,7 @@ class MemberController extends Controller
     public function reg()
     {
         if (IS_POST) {
-            if ($this->model->create() === false) {
+            if ($this->model->create('', 'add') === false) {
                 $this->error(getError($this->model));
             }
             if ($this->model->addMember() === false) {
@@ -65,7 +65,62 @@ class MemberController extends Controller
         } else {
             $this->error('验证失败', U('Index/index'));
         }
-
     }
+
+    /**
+     * 接收前端ajax请求数据验证信息是否存在
+     */
+    public function checkParam()
+    {
+        // 查询是否有匹配数据
+        if ($this->model->where(I('get.'))->count()) {
+            $this->ajaxReturn(false);
+        } else {
+            $this->ajaxReturn(true);
+        }
+    }
+
+    /**
+     * 用户登陆
+     */
+    public function login()
+    {
+        if (IS_POST) {
+            if ($this->model->create() == false) {
+                $this->error(getError($this->model));
+            }
+            if ($this->model->longinMember() == false) {
+                $this->error(getError($this->model));
+            }
+            $this->success('登陆成功', U('Index/index'));
+        } else {
+            $this->display();
+        }
+    }
+
+    /**
+     * 获取用户名绑定到哦前端
+     */
+    public function userinfo()
+    {
+        $userinfo = session('USERINFO');
+        if($userinfo){
+            $this->ajaxReturn($userinfo['username']);
+        }else{
+            $this->ajaxReturn(false);
+        }
+    }
+
+
+    /**
+     *用户退出
+     */
+    public function logout()
+    {
+        session(null);
+        cookie(null);
+        $this->success('退出成功', U('Index/index'));
+    }
+
 
 }

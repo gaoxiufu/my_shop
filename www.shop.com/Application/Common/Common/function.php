@@ -73,7 +73,7 @@ function password_salt($password, $salt)
  * @throws Exception
  * @throws phpmailerException
  */
-function sendMail($email,$subject,$content)
+function sendMail($email, $subject, $content)
 {
     Vendor('PHPMailer.PHPMailerAutoload');
     $mail = new \PHPMailer;
@@ -109,3 +109,13 @@ function sendMail($email,$subject,$content)
     }
 }
 
+/**
+ * 将浏览次数保存到redis
+ * @return bool
+ */
+function get_redis()
+{
+    $redis = new Redis();
+    $redis->connect(C('REDIS_HOST'), C('REDIS_PORT'));
+    return $redis;
+}
