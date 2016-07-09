@@ -39,18 +39,20 @@ class GoodsController extends Controller
             ];
             $goods_click_model->save($data);
         }
+//        return $num;
         $this->ajaxReturn($num);
     }
 
     /**
-     * 获取浏览次数
+     * 增加浏览次数
      * @param $id
      */
     public function clickNumRedis($id)
     {
         $redis = get_redis();
         $key = 'goods_clicks';
-        $this->ajaxReturn($redis->zIncrBy($key, 1, $id));
+        // zIncrBy 在指定的键上增加,
+        $this->ajaxReturn($redis->zIncrBy($key, 1, $id)); // 将最新数据返回到前端
     }
 
     /**
@@ -61,12 +63,13 @@ class GoodsController extends Controller
         // 获取redis
         $redis = get_redis();
         $key = 'goods_clicks';
-        // 获取redis中的数据
+        // 获取redis中的数据 zRange返回所有数据
         $click_times = $redis->zRange($key, 0, -1, true);
         // 判断变量是否存
         if (empty($click_times)) {
             return true;
         }
+        //zRange goods_clicks 0 -1 WITHSCORES
 
         $goods_ids = array_keys($click_times);
         // 删除原有的数据

@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
@@ -47,7 +47,7 @@
 <div class="header w1210 bc mt15">
     <!-- 头部上半部分 start 包括 logo、搜索、用户中心和购物车结算 -->
     <div class="logo w1210">
-        <h1 class="fl"><a href="/Index/index.html"><img src="http://www.shop.com/Public/images/logo.png" alt="京西商城"></a></h1>
+        <h1 class="fl"><a href="<?php echo U('Index/index');?>"><img src="http://www.shop.com/Public/images/logo.png" alt="京西商城"></a></h1>
         <!-- 头部搜索 start -->
         <div class="search fl">
             <div class="search_form">
@@ -75,12 +75,12 @@
             <dl>
                 <dt>
                     <em></em>
-                    <a href="/Member/index.html">用户中心</a>
+                    <a href="<?php echo U('Member/index');?>">用户中心</a>
                     <b></b>
                 </dt>
                 <dd>
                     <div class="prompt" id="usertips" >
-                        您好，请<a href="/Member/login.html">登录</a>
+                        您好，请<a href="<?php echo U('Member/login');?>">登录</a>
                     </div>
                     <div class="uclist mt10">
                         <ul class="list1 fl">
@@ -116,7 +116,7 @@
         <div class="cart fl">
             <dl>
                 <dt>
-                    <a href="">去购物车结算</a>
+                    <a href="<?php echo U('ShopCar/flow1');?>">去购物车结算</a>
                     <b></b>
                 </dt>
                 <dd>
@@ -135,27 +135,26 @@
     <!-- 导航条部分 start -->
     <div class="nav w1210 bc mt10">
         <!--  商品分类部分 start-->
-        <div class="category fl cat1"> <!-- 非首页，需要添加cat1类 -->
-            <div class="cat_hd off">  <!-- 注意，首页在此div上只需要添加cat_hd类，非首页，默认收缩分类时添加上off类，鼠标滑过时展开菜单则将off类换成on类 -->
+        <div class="category fl <?php if(!$show_category): ?>cat1<?php endif; ?>"> <!-- 非首页，需要添加cat1类 -->
+            <div class="cat_hd <?php if(!$show_category): ?>off<?php endif; ?>">  <!-- 注意，首页在此div上只需要添加cat_hd类，非首页，默认收缩分类时添加上off类，鼠标滑过时展开菜单则将off类换成on类 -->
                 <h2>全部商品分类</h2>
                 <em></em>
             </div>
 
-            <div class="cat_bd none">
-                <div class="cat item1">
-                    <h3><a href="">家用电器</a> <b></b></h3>
+            <div class="cat_bd <?php if(!$show_category): ?>none<?php endif; ?>">
+                <?php if(is_array($goods_categorys)): foreach($goods_categorys as $key=>$top_cat): if(($top_cat["parent_id"]) == "0"): ?><div class="cat item1">
+                    <h3><a href=""><?php echo ($top_cat["name"]); ?></a> <b></b></h3>
 
                     <div class="cat_detail">
-                        <dl class="dl_1st">
-                                    <dt><a href="">大家电</a></dt>
+                        <?php if(is_array($goods_categorys)): foreach($goods_categorys as $key=>$second_cat): if(($second_cat["parent_id"]) == $top_cat["id"]): ?><dl class="dl_1st">
+                                    <dt><a href=""><?php echo ($second_cat["name"]); ?></a></dt>
                                     <dd>
-                                        <a href="/Category/list/id/1.html">平板电视</a><a href="/Category/list/id/2.html">空调</a>                                    </dd>
-                                </dl><dl class="dl_1st">
-                                    <dt><a href="">生活电器</a></dt>
-                                    <dd>
-                                        <a href="/Category/list/id/6.html">加湿器</a><a href="/Category/list/id/5.html">净化器</a><a href="/Category/list/id/4.html">取暖器</a>                                    </dd>
-                                </dl>                    </div>
-                </div>            </div>
+                                        <?php if(is_array($goods_categorys)): foreach($goods_categorys as $key=>$third_cat): if(($third_cat["parent_id"]) == $second_cat["id"]): ?><a href="<?php echo U('Category/list',['id'=>$third_cat['id']]);?>"><?php echo ($third_cat["name"]); ?></a><?php endif; endforeach; endif; ?>
+                                    </dd>
+                                </dl><?php endif; endforeach; endif; ?>
+                    </div>
+                </div><?php endif; endforeach; endif; ?>
+            </div>
 
         </div>
         <!--  商品分类部分 end-->
@@ -290,13 +289,13 @@
         <div class="goods_content fl mt10 ml10">
             <!-- 商品概要信息 start -->
             <div class="summary">
-                <h3><strong>静美</strong></h3>
+                <h3><strong><?php echo ($row["name"]); ?></strong></h3>
 
                 <!-- 图片预览区域 start -->
                 <div class="preview fl">
                     <div class="midpic">
-                        <a href="" class="jqzoom" rel="gal1">   <!-- 第一幅图片的大图 class 和 rel属性不能更改 -->
-                            <img src="" alt="" />               <!-- 第一幅图片的中图 -->
+                        <a href="<?php echo ($row['galleries'][0]); ?>" class="jqzoom" rel="gal1">   <!-- 第一幅图片的大图 class 和 rel属性不能更改 -->
+                            <img src="<?php echo ($row['galleries'][0]); ?>" alt="" />               <!-- 第一幅图片的中图 -->
                         </a>
                     </div>
 
@@ -307,7 +306,10 @@
                         <a href="javascript:;" id="forward" class="on"></a>
                         <div class="smallpic_wrap">
                             <ul>
-                                
+                                <?php if(is_array($row["galleries"])): foreach($row["galleries"] as $key=>$gallery): ?><li class="<?php if(($key) == "0"): ?>cur<?php endif; ?>">
+                                        <a class="<?php if(($key) == "0"): ?>zoomThumbActive<?php endif; ?>" href="javascript:void(0);" rel="{gallery: 'gal1', smallimage: '<?php echo ($gallery); ?>',largeimage: '<?php echo ($gallery); ?>'}"><img src="<?php echo ($gallery); ?>"></a>
+                                    </li><?php endforeach; endif; ?>
+
                             </ul>
                         </div>
 
@@ -318,13 +320,13 @@
                 <!-- 商品基本信息区域 start -->
                 <div class="goodsinfo fl ml10">
                     <ul>
-                        <li><span>商品编号： </span>SN2016063000003</li>
-                        <li class="market_price"><span>定价：</span><em>￥99.00</em></li>
-                        <li class="shop_price"><span>本店价：</span> <strong>￥56.00</strong> <a href="">(降价通知)</a></li>
-                        <li><span>上架时间：</span>2016-06-30</li>
+                        <li><span>商品编号： </span><?php echo ($row["sn"]); ?></li>
+                        <li class="market_price"><span>定价：</span><em>￥<?php echo ($row["market_price"]); ?></em></li>
+                        <li class="shop_price"><span>本店价：</span> <strong>￥<?php echo ($row["shop_price"]); ?></strong> <a href="">(降价通知)</a></li>
+                        <li><span>上架时间：</span><?php echo (date("Y-m-d",$row["inputtime"])); ?></li>
                         <li><span>浏览次数：</span><label id="click_times"></label>次</li>
                     </ul>
-                    <form action="" method="post" class="choose">
+                    <form action="<?php echo U('ShopCar/shopcar');?>" method="post" class="choose">
                         <ul>
 
                             <li>
@@ -342,6 +344,7 @@
                                 <dl>
                                     <dt>&nbsp;</dt>
                                     <dd>
+                                        <input type="hidden" name="id" value="<?php echo ($row["id"]); ?>"/>
                                         <input type="submit" value="" class="add_btn" />
                                     </dd>
                                 </dl>
@@ -370,15 +373,16 @@
                     <div class="introduce detail_div">
                         <div class="attr mt15">
                             <ul>
-                                <li><span>商品名称：</span>静美</li>
-                                <li><span>商品编号：</span>SN2016063000003</li>
-                                <li><span>品牌：</span>格力</li>
-                                <li><span>上架时间：</span>2016-06-30 21:29:58</li>
+                                <li><span>商品名称：</span><?php echo ($row["name"]); ?></li>
+                                <li><span>商品编号：</span><?php echo ($row["sn"]); ?></li>
+                                <li><span>品牌：</span><?php echo ($row["bname"]); ?></li>
+                                <li><span>上架时间：</span><?php echo (date("Y-m-d H:i:s",$row["inputtime"])); ?></li>
                             </ul>
                         </div>
 
                         <div class="desc mt10">
-                            <p>阿达<img src="http://admin.shop.com/2016-07-08/577f25774000e.png" title="577f25774000e.png" alt="d.png"/></p>                        </div>
+                            <?php echo ($row["content"]); ?>
+                        </div>
                     </div>
                     <!-- 商品介绍 end -->
 
@@ -612,27 +616,15 @@
 
 <!-- 底部导航 start -->
 <div class="bottomnav w1210 bc mt10">
-                <div class="bnav1">
-            <h3><b></b> <em>支付方式</em></h3>
+    <?php $i=0; ?>
+    <?php if(is_array($help_articles)): foreach($help_articles as $key=>$help_list): $i++; ?>
+        <div class="bnav<?php echo ($i); ?>">
+            <h3><b></b> <em><?php echo ($key); ?></em></h3>
             <ul>
-                <li><a href="/HelpTips/show.html">货到付款</a></li>            </ul>
-        </div>        <div class="bnav2">
-            <h3><b></b> <em>配送方式</em></h3>
-            <ul>
-                <li><a href="/HelpTips/show.html">上门自提</a></li><li><a href="/HelpTips/show.html">海外购物</a></li>            </ul>
-        </div>        <div class="bnav3">
-            <h3><b></b> <em>售后服务</em></h3>
-            <ul>
-                <li><a href="/HelpTips/show.html">退换货政策</a></li>            </ul>
-        </div>        <div class="bnav4">
-            <h3><b></b> <em>特色服务</em></h3>
-            <ul>
-                <li><a href="/HelpTips/show.html">DIY装机</a></li>            </ul>
-        </div>        <div class="bnav5">
-            <h3><b></b> <em>购物指南</em></h3>
-            <ul>
-                <li><a href="/HelpTips/show.html">购物流程</a></li>            </ul>
-        </div>
+                <?php if(is_array($help_list)): foreach($help_list as $key=>$article): ?><li><a href="<?php echo U('HelpTips/show',['id'=>$artice['id']]);?>"><?php echo ($article["name"]); ?></a></li><?php endforeach; endif; ?>
+            </ul>
+        </div><?php endforeach; endif; ?>
+
 </div>
 <!-- 底部导航 end -->
 
@@ -668,15 +660,15 @@
 <script type="text/javascript" src="http://www.shop.com/Public/js/jquery.min.js"></script>
 <script type="text/javascript" src="http://www.shop.com/Public/js/header.js"></script>
 <script>
-//    您好，欢迎来到京西！[<a href="/Member/login.html">登录</a>] [<a href="/Member/reg.html">免费注册</a>]
-    var url='/Member/userinfo.html';
+//    您好<?php echo ($userinfo["username"]); ?>，欢迎来到京西！[<a href="<?php echo U('Member/login');?>">登录</a>] [<a href="<?php echo U('Member/reg');?>">免费注册</a>]
+    var url='<?php echo U("Member/userinfo");?>';
     $.getJSON(url,function(username){
         if(username){
-            var html1 = '您好'+username+'，欢迎来到京西！[<a href="/Member/logout.html">退出</a>]';
+            var html1 = '您好'+username+'，欢迎来到京西！[<a href="<?php echo U('Member/logout');?>">退出</a>]';
             var html2 = '您好，' + username;
         }else {
-            var html1 = '您好，欢迎来到京西！[<a href="/Member/login.html">登录</a>] [<a href="/Member/reg.html">免费注册</a>]';
-            var html2 = '您好，请<a href="/Member/login.html">登录</a>';
+            var html1 = '您好，欢迎来到京西！[<a href="<?php echo U('Member/login');?>">登录</a>] [<a href="<?php echo U('Member/reg');?>">免费注册</a>]';
+            var html2 = '您好，请<a href="<?php echo U('Member/login');?>">登录</a>';
         }
         $('#userinfo').html(html1);
         $('#usertips').html(html2);
@@ -699,9 +691,9 @@
                 zoomWidth:400,
                 zoomHeight:400
             });
-            var url="/Goods/clickNumRedis.html";
+            var url="<?php echo U('Goods/clickNumRedis');?>";
             var data={
-                id:6,
+                id:<?php echo ($row["id"]); ?>,
             };
             $.getJSON(url,data,function(num){
                 $('#click_times').text(num);

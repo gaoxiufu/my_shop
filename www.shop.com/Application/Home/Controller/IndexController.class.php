@@ -49,6 +49,8 @@ class IndexController extends Controller
      */
     public function index()
     {
+//        dump(cookie('USER_TOKEN'));
+
         // 新品,精品,热销展示
         $goods_model = D('Goods');
         $data = [

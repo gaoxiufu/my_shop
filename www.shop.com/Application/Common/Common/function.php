@@ -110,7 +110,7 @@ function sendMail($email, $subject, $content)
 }
 
 /**
- * 将浏览次数保存到redis
+ * 实例化redis
  * @return bool
  */
 function get_redis()
