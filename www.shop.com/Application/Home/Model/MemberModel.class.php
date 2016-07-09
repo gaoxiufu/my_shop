@@ -118,14 +118,14 @@ class MemberModel extends Model
             return false;
         }
 
-        $data=[
-            'id'=>$userinfo['id'],
-            'last_login_time'=>NOW_TIME,
-            'last_login_ip'=>get_client_ip(1),
+        $data = [
+            'id'              => $userinfo['id'],
+            'last_login_time' => NOW_TIME,
+            'last_login_ip'   => get_client_ip(1),
         ];
         $this->save($data);
         // 将用户信息保存到session
-        session('USERINFO',$userinfo);
+        session('USERINFO', $userinfo);
 
         // 自动登陆
 
@@ -136,17 +136,19 @@ class MemberModel extends Model
         if (I('post.remember')) { // 如果勾选了标记,就讲用户信息保到cookie
             $data = [
                 'user_id' => $userinfo['id'],
-                'token'    => \Org\Util\String::randString(40),
+                'token'   => \Org\Util\String::randString(40),
             ];
             // 保存cookie并设置过时间
             cookie('USER_TOKEN', $data, 3360);
 
             // 将新的token记录存入库中
             $admin_token_model->add($data);
-
         }
-        return $userinfo;
+        // 获取cookie中的购物车数据保存到数据库中,并情况cookie
+        $shopping_car_model = D('ShoppingCar');
+        $shopping_car_model->cookie2db();
 
+        return $userinfo;
     }
 
 }

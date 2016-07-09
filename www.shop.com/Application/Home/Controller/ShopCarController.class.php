@@ -13,6 +13,14 @@ use Think\Controller;
 
 class ShopCarController extends Controller
 {
+    /**
+     * @var \Home\Model\ShoppingCarModel
+     */
+    private $model = null;
+
+    protected function _initialize() {
+        $this->model = D('ShoppingCar');
+    }
 
     public function shopcar($id, $amount)
     {
@@ -28,21 +36,24 @@ class ShopCarController extends Controller
             cookie($key, $car_list, 604800); // 保存到cookie中
         } else {// 用户登陆
             // 获取当前用户商品数量
-            $shopping_car_model = D('ShoppingCar');
-            $shop_amount = $shopping_car_model->getAmount($id);
+            $shop_amount =  $this->model->getAmount($id);
             if ($shop_amount) {
                 // 如果商品数量存在就增加数据
-                $shopping_car_model->addUp($id, $amount);
+                 $this->model->addUp($id, $amount);
             } else {
                 // 如果商品数量不存在就新增数据
-                $shopping_car_model->addCar($id, $amount);
+                 $this->model->addCar($id, $amount);
             }
         }
         $this->success('添加成功', U('flow1'));
     }
 
+    /**
+     * 购物车
+     */
     public function flow1()
     {
+       $this->model->getShoppingCar();
         $this->display();
     }
 }
