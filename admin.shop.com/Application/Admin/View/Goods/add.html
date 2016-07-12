@@ -104,11 +104,24 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="label">会员价：</td><br/>
+                    <td>
+                        <foreach name="member_levels" item="member_level">
+                            {$member_level.name}:<input type="text" name="member_level_price[{$member_level.id}]" value="{$row['member_prices'][$member_level['id']]}" size="20"/><br/><br/>
+                        </foreach>
+
+                    </td>
+                </tr>
+
+                <tr>
                     <td class="label">市场售价：</td>
                     <td>
                         <input type="text" name="market_price" value="{$row.market_price}" size="20"/>
                     </td>
                 </tr>
+
+                </tr>
+
                 <tr>
                     <td class="label">商品数量：</td>
                     <td>

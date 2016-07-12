@@ -14,24 +14,24 @@ use Think\Controller;
 class GoodsController extends Controller
 {
     /**
-     * ¼ÆËãÉÌÆ·µÄä¯ÀÀ´ÎÊı
-     * 1.Èç¹ûÃ»ÓĞä¯ÀÀ´ÎÊı¾ÍĞÂÔöÒ»Ìõ
-     * 2.Èç¹ûÓĞä¯ÀÀ´ÎÊı¾ÍÔÚÔ­´ÎÊıÉÏ+1
+     * è®¡ç®—å•†å“çš„æµè§ˆæ¬¡æ•°
+     * 1.å¦‚æœæ²¡æœ‰æµè§ˆæ¬¡æ•°å°±æ–°å¢ä¸€æ¡
+     * 2.å¦‚æœæœ‰æµè§ˆæ¬¡æ•°å°±åœ¨åŸæ¬¡æ•°ä¸Š+1
      * @param $id
      */
     public function clockNum($id)
     {
         $goods_click_model = M('GoodsClick');
-        // Í¨¹ıID»ñÈ¡µ±Ç°ÉÌÆ·µÄµã»÷´ÎÊı.
+        // é€šè¿‡IDè·å–å½“å‰å•†å“çš„ç‚¹å‡»æ¬¡æ•°.
         $num = $goods_click_model->getFieldByGoodsId($id, 'click_times');
-        if (!$num) { // Èç¹ûÃ»ÓĞµã»÷´ÎÊı,¾ÍÄ¬ÈÏÎª1,´æÈëÊı¾İ¿â.
+        if (!$num) { // å¦‚æœæ²¡æœ‰ç‚¹å‡»æ¬¡æ•°,å°±é»˜è®¤ä¸º1,å­˜å…¥æ•°æ®åº“.
             $num = 1;
             $data = [
                 'goods_id'    => $id,
                 'click_times' => $num,
             ];
             $goods_click_model->add($data);
-        } else {   // Èç¹ûÓĞµã»÷´ÎÊı,¾ÍÔÚÔ­À´µÄ´ÎÊıÉÏ+1.
+        } else {   // å¦‚æœæœ‰ç‚¹å‡»æ¬¡æ•°,å°±åœ¨åŸæ¥çš„æ¬¡æ•°ä¸Š+1.
             ++$num;
             $data = [
                 'goods_id'    => $id,
@@ -44,38 +44,38 @@ class GoodsController extends Controller
     }
 
     /**
-     * Ôö¼Óä¯ÀÀ´ÎÊı
+     * å¢åŠ æµè§ˆæ¬¡æ•°
      * @param $id
      */
     public function clickNumRedis($id)
     {
         $redis = get_redis();
         $key = 'goods_clicks';
-        // zIncrBy ÔÚÖ¸¶¨µÄ¼üÉÏÔö¼Ó,
-        $this->ajaxReturn($redis->zIncrBy($key, 1, $id)); // ½«×îĞÂÊı¾İ·µ»Øµ½Ç°¶Ë
+        // zIncrBy åœ¨æŒ‡å®šçš„é”®ä¸Šå¢åŠ ,
+        $this->ajaxReturn($redis->zIncrBy($key, 1, $id)); // å°†æœ€æ–°æ•°æ®è¿”å›åˆ°å‰ç«¯
     }
 
     /**
-     * ½«redisÖĞµÄä¯ÀÀ¼ÇÂ¼±£´æµ½Êı¾İ±í
+     * å°†redisä¸­çš„æµè§ˆè®°å½•ä¿å­˜åˆ°æ•°æ®è¡¨
      */
     public function syncClick()
     {
-        // »ñÈ¡redis
+        // è·å–redis
         $redis = get_redis();
         $key = 'goods_clicks';
-        // »ñÈ¡redisÖĞµÄÊı¾İ zRange·µ»ØËùÓĞÊı¾İ
+        // è·å–redisä¸­çš„æ•°æ® zRangeè¿”å›æ‰€æœ‰æ•°æ®
         $click_times = $redis->zRange($key, 0, -1, true);
-        // ÅĞ¶Ï±äÁ¿ÊÇ·ñ´æ
+        // åˆ¤æ–­å˜é‡æ˜¯å¦å­˜
         if (empty($click_times)) {
             return true;
         }
         //zRange goods_clicks 0 -1 WITHSCORES
 
         $goods_ids = array_keys($click_times);
-        // É¾³ıÔ­ÓĞµÄÊı¾İ
+        // åˆ é™¤åŸæœ‰çš„æ•°æ®
         $goods_click_model = M('GoodsClick');
         $goods_click_model->where(['goods_id' => ['in', $goods_ids]])->delete();
-        // ĞÂÔöÊı¾İ
+        // æ–°å¢æ•°æ®
         $data = [];
         foreach ($click_times as $key => $val) {
             $data[] = [

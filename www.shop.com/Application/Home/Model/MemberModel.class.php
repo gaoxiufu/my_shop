@@ -132,7 +132,6 @@ class MemberModel extends Model
         //删除用户相关的token记录
         $admin_token_model = M('UserToken');
         $admin_token_model->delete($userinfo['id']);
-
         if (I('post.remember')) { // 如果勾选了标记,就讲用户信息保到cookie
             $data = [
                 'user_id' => $userinfo['id'],
@@ -150,5 +149,7 @@ class MemberModel extends Model
 
         return $userinfo;
     }
+
+
 
 }

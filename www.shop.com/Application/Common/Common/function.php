@@ -119,3 +119,14 @@ function get_redis()
     $redis->connect(C('REDIS_HOST'), C('REDIS_PORT'));
     return $redis;
 }
+
+/**
+ * 将整数格式化为带两位小数的金钱数字
+ * 如:100->100.00
+ * @param $number
+ * @return string
+ */
+function get_number_format($number)
+{
+    return number_format($number, 2, '.', '');
+}

@@ -102,11 +102,22 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="label">会员价：</td><br/>
+                    <td>
+                        <?php if(is_array($member_levels)): foreach($member_levels as $key=>$member_level): echo ($member_level["name"]); ?>:<input type="text" name="member_level_price[<?php echo ($member_level["id"]); ?>]" value="<?php echo ($row['member_prices'][$member_level['id']]); ?>" size="20"/><br/><br/><?php endforeach; endif; ?>
+
+                    </td>
+                </tr>
+
+                <tr>
                     <td class="label">市场售价：</td>
                     <td>
                         <input type="text" name="market_price" value="<?php echo ($row["market_price"]); ?>" size="20"/>
                     </td>
                 </tr>
+
+                </tr>
+
                 <tr>
                     <td class="label">商品数量：</td>
                     <td>

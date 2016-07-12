@@ -1,0 +1,182 @@
+<extend name="Layout:cart_base"/>
+
+<block name="css">
+    <link rel="stylesheet" href="__CSS__/fillin.css" type="text/css">
+</block>
+
+
+<block name="content">
+    <!-- 主体部分 start -->
+    <div class="fillin w990 bc mt15">
+        <div class="fillin_hd">
+            <h2>填写并核对订单信息</h2>
+        </div>
+        <form action="{:U('OrderInfo/add')}" method="post">
+            <div class="fillin_bd">
+                <!-- 收货人信息  start-->
+                <div class="address">
+                    <h3>收货人信息 </h3>
+
+                    <div class="address_info">
+                        <foreach name="addresses" item="address">
+                            <p>
+                                <input type="radio" value="{$address.id}" name="address_id"
+                                <eq name="address.is_default" value="1"> checked="checked"</eq>
+                                />
+                                {$address.name} {$address.name} {$address.tel} {$address.province_name}
+                                {$address.city_name}
+                                {$address.area_name}
+                            </p>
+                        </foreach>
+                    </div>
+
+                </div>
+                <!-- 收货人信息  end-->
+
+                <!-- 配送方式 start -->
+                <div class="delivery">
+                    <h3>送货方式 </h3>
+
+                    <div class="delivery_info">
+                        <foreach name="deliverys" item="delivery">
+                            <p>
+                                <input type="radio" value="{$delivery.id}" name="delivery_id" price="{$delivery.price}"
+                                <eq name="delivery.is_default" value="1"> checked="checked"</eq>
+                                />
+                                {$delivery.name} {$delivery.price} {$delivery.intro}
+                            </p>
+                        </foreach>
+                    </div>
+
+                </div>
+                <!-- 配送方式 end -->
+
+                <!-- 支付方式  start-->
+                <div class="pay">
+                    <h3>支付方式 </h3>
+
+                    <div class="pay_info">
+                        <foreach name="payments" item="payment">
+                            <p>
+                                <input type="radio" value="{$payment.id}" name="pay_type_id"
+                                <eq name="payment.is_default" value="1"> checked="checked"</eq>
+                                />
+                                {$payment.name} {$payment.intro}
+                            </p>
+                        </foreach>
+                    </div>
+                </div>
+
+                <!-- 支付方式  end-->
+
+                <!-- 发票信息 start-->
+                <div class="receipt">
+                    <h3>发票信息 <a href="javascript:;" id="receipt_modify">[修改]</a></h3>
+
+                    <div class="receipt_info">
+                        <ul>
+                            <li>
+                                <label for="">发票抬头：</label>
+                                <input type="radio" checked="checked"  name="receipt_type" value="1" class="personal"/>个人
+                                <input type="radio" class="company"  name="receipt_type" value="2"/>单位
+                                <input type="text" class="txt company_input" disabled="disabled" name="company_name"/>
+                            </li>
+                            <li>
+                                <label for="">发票内容：</label>
+                                <input type="radio" name="receipt_content" checked="checked" value="1"/>明细
+                                <input type="radio" name="receipt_content" value="2"/>办公用品
+                                <input type="radio" name="receipt_content" value="3"/>体育休闲
+                                <input type="radio" name="receipt_content" value="4"/>耗材
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 发票信息 end-->
+
+                <!-- 商品清单 start -->
+                <div class="goods">
+                    <h3>商品清单</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th class="col1">商品</th>
+                            <th class="col3">价格</th>
+                            <th class="col4">数量</th>
+                            <th class="col5">小计</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <foreach name="goods_info" item="goods">
+                            <tr>
+                                <td class="col1">
+                                    <a href="{:U('Index/goods',['id'=>$goods['id']])}"><img src="{$goods.logo}" alt=""/></a>
+                                    <strong>
+                                        <a href="{:U('Index/goods',['id'=>$goods['id']])}">{$goods.name}</a>
+                                    </strong>
+                                </td>
+                                <td class="col3">￥<span>{$goods.shop_price}</span></td>
+                                <td class="col4">{$goods.amount}</td>
+                                <td class="col5">￥<span>{$goods.sub_total}</span></td>
+                            </tr>
+                        </foreach>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <ul>
+                                    <li>
+                                        <span>总商品金额：</span>
+                                        <em>￥{$total_price}</em>
+                                    </li>
+                                    <li>
+                                        <span>运费：</span>
+                                        <em class="yunfei">￥10.00</em>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- 商品清单 end -->
+
+            </div>
+
+            <div class="fillin_ft">
+                <a href="javascript:;" onclick="do_submit()"><span>提交订单</span></a>
+
+                <p>应付总额：<strong class="zongjia">￥{$total_price}元</strong></p>
+
+            </div>
+        </form>
+    </div>
+    <!-- 主体部分 end -->
+</block>
+<block name="js">
+    <script type="text/javascript" src="__JS__/jquery.min.js"></script>
+    <script type="text/javascript" src="__JS__/cart2.js"></script>
+    <script>
+        var total_price = {$total_price};
+        $(function(){
+            // 监听运费切换
+            $('.delivery_info input').change(function(){
+                // 获取切换的运费价格
+                var price=$('.delivery_info input:checked').attr('price');
+                // 改变运费的输出
+                $('.yunfei').text('￥'+price);
+                // 计算总价
+                var zongjia=total_price*1+price*1;
+                // 将总价添上两位小数
+                zongjia=zongjia.toFixed(2);
+                // 改变总价的输出
+                $('.zongjia').text('￥'+zongjia+'元');
+            });
+
+        });
+
+        // 监听点击事件
+        function do_submit() {
+            $('form').get(0).submit();
+        }
+    </script>
+</block>

@@ -53,7 +53,7 @@ class GoodsController extends Controller
         // 按照推荐状态搜索
         $goods_status = I('get.goods_status');
         if ($goods_status) {
-            $cond[] = 'goods_status &'.$goods_status;
+            $cond[] = 'goods_status &' . $goods_status;
         }
 
         // 上架状态搜索
@@ -93,7 +93,6 @@ class GoodsController extends Controller
             ['id' => 0, 'name' => '下架'],
         ];
         $this->assign('is_on_sales', $is_on_sales);
-
 
 
         // 分页
@@ -145,6 +144,7 @@ class GoodsController extends Controller
         } else {
             $row = $this->model->getGoodsInfo($id);
             $this->assign('row', $row);
+
             $this->load_data();
             $this->display('add');
         }
@@ -180,9 +180,15 @@ class GoodsController extends Controller
         $supplier_model = D('Supplier');
         $suppliers = $supplier_model->getList();
         $this->assign('suppliers', $suppliers);
+
         // 商品编码
         $sn = $this->model->createSn();
         $this->assign('sn', $sn);
+
+        // 会员等级
+        $member_level_model = M('MemberLevel');
+        $member_levels = $member_level_model->where(['status' => 1])->order('sort')->select();
+        $this->assign('member_levels', $member_levels);
     }
 
     /**

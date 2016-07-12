@@ -20,26 +20,25 @@ class IndexController extends Controller
         $this->assign('show_category', $show_categroy);
 
         // 获取商品分类,并将数据保存到缓存中减少数据库读取压力.
-        if(!$goods_categorys=S('goods_categorys')){
+        if (!$goods_categorys = S('goods_categorys')) {
             $goods_category_model = D('GoodsCategory');
             $goods_categorys = $goods_category_model->getList('id,name,parent_id');
-            S('goods_categorys', $goods_categorys,3600);
+            S('goods_categorys', $goods_categorys, 3600);
         }
         $this->assign('goods_categorys', $goods_categorys);
 
 
         // 获取帮助类文档,并将数据保存到缓存中减少数据库读取压力.
-        if(!$help_articles=S('help_articles')){
+        if (!$help_articles = S('help_articles')) {
             $article_category_model = D('Article');
             $help_articles = $article_category_model->getHelpArticle();
-            S('help_articles', $help_articles,3600);
+            S('help_articles', $help_articles, 3600);
         }
         $this->assign('help_articles', $help_articles);
 
         //获取用户登陆信息
         $userinfo = session('USERINFO');
         $this->assign('userinfo', $userinfo);
-
 
     }
 
@@ -49,8 +48,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-//        dump(cookie('USER_TOKEN'));
-
         // 新品,精品,热销展示
         $goods_model = D('Goods');
         $data = [
@@ -71,10 +68,41 @@ class IndexController extends Controller
     {
         $goods_model = D('Goods');
         $row = $goods_model->getGoods($id);
-        if(!$row){
-            $this->error('商品已经下架',U('index'));
+        if (!$row) {
+            $this->error('商品已经下架', U('index'));
         }
-        $this->assign('row',$row);
+        $this->assign('row', $row);
         $this->display();
     }
+
+    /**
+     * 收货地址管理
+     */
+    public function location()
+    {
+        // 获取省份
+        $locations_model = D('Locations');
+        $provinces = $locations_model->getParentId();
+        $this->assign('provinces', $provinces);
+
+        // 获取所有收货地址
+        $address_model = D('Address');
+        $addresses = $address_model->getlist();
+        $this->assign('addresses', $addresses);
+        $this->display();
+    }
+
+
+    /**
+     * 获取市级或区县
+     * @param $parent_id
+     */
+    public function getSubclass($parent_id)
+    {
+        $locations_model = D('Locations');
+        $provinces = $locations_model->getParentId($parent_id);
+        $this->ajaxReturn($provinces);
+    }
+
+
 }

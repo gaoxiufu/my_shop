@@ -121,9 +121,29 @@ class GoodsModel extends Model
             ];
         }
 
-
         if ($datas && ($goods_gallery_model->addAll($datas) === false)) {
             $this->rollback();// 回滚事务
+            return false;
+        }
+
+        // 保存会员价
+        $member_goods_price_model = M('MemberGoodsPrice');
+        $member_levels = I('post.member_level_price');
+        $data = [];
+        foreach ($member_levels as $member_level => $member_price) {
+            //如果没有设置这个会员的价格，就不插入数据
+            if (!$member_price) {
+                continue;
+            }
+            $data[] = [
+                'goods_id'        => $goods_id,
+                'member_level_id' => $member_level,
+                'price'           => $member_price,
+            ];
+        }
+        if ($data && ($member_goods_price_model->addAll($data) === false)) {
+            $this->error = '保存会员价失败';
+            $this->rollback();
             return false;
         }
 
@@ -187,6 +207,10 @@ class GoodsModel extends Model
         // 获取相册地址
         $goods_gallery_model = M('GoodsGallery');
         $row['paths'] = $goods_gallery_model->getFieldByGoodsId($id, 'id,path');
+        // 获取会员价格
+        //获取会员价格
+        $member_goods_price_model = M('MemberGoodsPrice');
+        $row['member_prices'] = $member_goods_price_model->where(['goods_id' => $id])->getField('member_level_id,price');
         // 返回数据
         return $row;
     }
@@ -231,6 +255,32 @@ class GoodsModel extends Model
             $this->rollback(); // 数据更新失败,回滚事务
             return false;
         }
+
+        // 更新会员价格
+        $member_goods_price_model = M('MemberGoodsPrice');
+        // 删除原有的会员价格
+        $member_goods_price_model->where(['goods_id' => $id])->delete();
+        $data = [];
+        $member_prices = I('post.member_level_price');
+        foreach ($member_prices as $member_level => $member_price) {
+            //如果没有设置这个会员的价格，就不插入数据
+            if (!$member_price) {
+                continue;
+            }
+            $data[] = [
+                'goods_id'        => $id,
+                'member_level_id' => $member_level,
+                'price'           => $member_price,
+            ];
+        }
+
+        //添加会员价
+        if ($data && ($member_goods_price_model->addAll($data) === false)) {
+            $this->error = '保存会员价失败';
+            $this->rollback();
+            return false;
+        }
+
         // 提交事务
         $this->commit();
         return true;

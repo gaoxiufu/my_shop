@@ -92,7 +92,14 @@ class MemberController extends Controller
             if ($this->model->longinMember() == false) {
                 $this->error(getError($this->model));
             }
-            $this->success('登陆成功', U('Index/index'));
+
+            $url = cookie('__FORWARD__');
+            cookie('__FORWARD__', null);
+            if (!$url) {
+                $url = U('Index/index');
+            }
+
+            $this->success('登陆成功', $url);
         } else {
             $this->display();
         }
@@ -104,9 +111,9 @@ class MemberController extends Controller
     public function userinfo()
     {
         $userinfo = session('USERINFO');
-        if($userinfo){
+        if ($userinfo) {
             $this->ajaxReturn($userinfo['username']);
-        }else{
+        } else {
             $this->ajaxReturn(false);
         }
     }
