@@ -61,4 +61,6 @@ class TestController extends Controller
             echo 'Message has been sent';
         }
     }
+
+
 }

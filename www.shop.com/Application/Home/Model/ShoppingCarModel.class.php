@@ -172,8 +172,10 @@ class ShoppingCarModel extends Model
             $member_price = $member_goods_price_model->where($cond)->getField('price');
             if ($member_price) {
                 $goods_info[$key]['shop_price'] = $member_price;
-            } else {
-                $goods_info[$key]['shop_price'] = locate_number_format($goods_info[$key]['shop_price'] * $discount / 100);
+            } elseif($userinfo){ // 判断是否登陆
+                $goods_info[$key]['shop_price'] = get_number_format($goods_info[$key]['shop_price'] * $discount / 100);
+            }else{
+                $goods_info[$key]['shop_price'] = get_number_format($goods_info[$key]['shop_price']);
             }
 
             // 将商品数量放入商品信息数组中

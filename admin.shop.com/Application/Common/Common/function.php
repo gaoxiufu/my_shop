@@ -64,3 +64,49 @@ function password_salt($password, $salt)
     return md5(md5($password) . $salt);
 }
 
+
+/**
+ * 邮件发送
+ * @param $email
+ * @param $subject
+ * @param $content
+ * @return array
+ * @throws Exception
+ * @throws phpmailerException
+ */
+function sendMail($email,$subject,$content)
+{
+    Vendor('PHPMailer.PHPMailerAutoload');
+    $mail = new \PHPMailer;
+
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.126.com';  //填写发送邮件的服务器地址
+    $mail->SMTPAuth = true;                               // 使用smtp验证
+    $mail->Username = 'kunx_edu@126.com';                 // 发件人账号名
+    $mail->Password = 'iam4ge';                           // 密码
+    $mail->SMTPSecure = 'ssl';                            // 使用协议,具体是什么根据你的邮件服务商来确定
+    $mail->Port = 465;                                    // 使用的端口
+
+    $mail->setFrom('kunx_edu@126.com', 'ayiyayo');//发件人,注意:邮箱地址必须和上面的一致
+    $mail->addAddress($email);     // 收件人
+
+    $mail->isHTML(true);                                  // 是否是html格式的邮件
+
+    $mail->Subject = $subject;//标题
+    $mail->Body = $content;//正文
+    $mail->CharSet = 'UTF-8';
+
+    if ($mail->send()) {
+        return [
+            'status' => 1,
+            'msg'    => '发送成功',
+        ];
+    } else {
+        return [
+            'status' => 0,
+            'msg'    => $mail->ErrorInfo,
+        ];
+
+    }
+}
+

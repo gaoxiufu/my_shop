@@ -2004,7 +2004,7 @@ seriesProto.toXY = function (point) {
 };
 
 /** 
- * Order the tooltip points to get the mouse capture ranges correct. #1915. 
+ * OrderInfo the tooltip points to get the mouse capture ranges correct. #1915.
  */
 seriesProto.orderTooltipPoints = function (points) {
 	if (this.chart.polar) {

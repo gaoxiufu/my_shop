@@ -74,7 +74,7 @@ class ShopCarController extends Controller
         $userinfo = session('USERINFO');
         // 判断用户是否登陆
         if (!$userinfo) { // 如果没登陆就跳转到登陆页面,登陆后再跳转到订单页面
-            cookie('__FORWARD__', __SELF__); // 将当前页面地址保存到cookie中，以便能够登陆后跳转
+            cookie('__FORWARD__', __SELF__); // 将当前页面地址保存到cookie中，登陆后跳转
             $this->error('请先登陆', U('Member/login'));
         } else { // 如果登陆就直接引入订单信息视图
             // 获取收货人信息数据
