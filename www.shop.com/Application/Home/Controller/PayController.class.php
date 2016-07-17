@@ -18,7 +18,7 @@ class PayController extends Controller
      * 支付成功,将订单状态修改为 待发货(模拟支付)
      * @param $id
      */
-    public function alipay($id)
+    public function alipay1($id)
     {
         $order_info_model = M('OrderInfo');
         if ($order_info_model->where(['id' => $id])->setField('status', 2) === false) {
@@ -33,7 +33,7 @@ class PayController extends Controller
      * 支付宝支付
      * @param $id
      */
-    public function alipay1($id) {
+    public function alipay($id) {
         header('Content-Type: text/html;charset=UTF-8');
         //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
         //合作身份者id，以2088开头的16位纯数字

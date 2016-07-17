@@ -6,6 +6,19 @@
 <block name="js">
 	<script type="text/javascript" src="__JS__/jquery.min.js"></script>
 	<script type="text/javascript" src="__JS__/cart1.js"></script>
+	<script>
+		$(function(){
+			$('.add_num').click(function(){
+				var aa= $(this).prev().val();
+				console.log(aa);
+			});
+
+			$('.reduce_num').click(function(){
+				var aa= $(this).next().val();
+				console.log(aa);
+			});
+		});
+	</script>
 </block>
 
 	<block name="content">

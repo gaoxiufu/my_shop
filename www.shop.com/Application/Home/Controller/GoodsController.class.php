@@ -19,7 +19,7 @@ class GoodsController extends Controller
      * 2.如果有浏览次数就在原次数上+1
      * @param $id
      */
-    public function clockNum($id)
+    public function clickNumRedis($id)
     {
         $goods_click_model = M('GoodsClick');
         // 通过ID获取当前商品的点击次数.
@@ -47,7 +47,7 @@ class GoodsController extends Controller
      * 增加浏览次数
      * @param $id
      */
-    public function clickNumRedis($id)
+    public function clickNumRedis1($id)
     {
         $redis = get_redis();
         $key = 'goods_clicks';

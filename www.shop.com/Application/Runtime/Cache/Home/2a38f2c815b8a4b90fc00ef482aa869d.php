@@ -71,8 +71,7 @@
 						</li>
 						<li>
 							<label for="">&nbsp;</label>
-							<input type="hidden" name="remember" value="1">
-							<input type="checkbox" class="chb"  /> 保存登录信息
+							<input type="checkbox" class="chb"  name="remember" value="1"/> 保存登录信息
 						</li>
 						<li>
 							<label for="">&nbsp;</label>

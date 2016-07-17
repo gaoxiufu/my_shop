@@ -23,7 +23,7 @@
             <ul>
                 <li id="userinfo"></li>
                 <li class="line">|</li>
-                <li>我的订单</li>
+                <li><a href="<?php echo U('OrderInfo/index');?>">我的订单</a></li>
                 <li class="line">|</li>
                 <li>客户服务</li>
 
@@ -39,12 +39,13 @@
 <div class="header w990 bc mt15">
     <div class="logo w990">
         <h2 class="fl"><a href="<?php echo U('Index/index');?>"><img src="http://www.shop.com/Public/images/logo.png" alt="京西商城"></a></h2>
-        <div class="flow fr">
+          <div class="flow fr <?php echo (ACTION_NAME); ?>">
             <ul>
-                <li class="cur">1.我的购物车</li>
-                <li>2.填写核对订单信息</li>
-                <li>3.成功提交订单</li>
+                <li <?php if((ACTION_NAME) == "flow1"): ?>class="cur"<?php endif; ?>>1.我的购物车</li>
+                <li <?php if((ACTION_NAME) == "flow2"): ?>class="cur"<?php endif; ?>>2.填写核对订单信息</li>
+                <li <?php if((ACTION_NAME) == "flow3"): ?>class="cur"<?php endif; ?>>3.成功提交订单</li>
             </ul>
+
         </div>
     </div>
 </div>
@@ -67,49 +68,27 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td class="col1"><a href=""><img src="http://www.shop.com/Public/images/cart_goods1.jpg" alt="" /></a>  <strong><a href="">【1111购物狂欢节】惠JackJones杰克琼斯纯羊毛菱形格</a></strong></td>
-					<td class="col3">￥<span>499.00</span></td>
+			<?php if(is_array($goods_info)): foreach($goods_info as $key=>$goods): ?><tr>
+					<td class="col1"><a href="<?php echo U('Index/goods',['id'=>$goods['id']]);?>"><img src="<?php echo ($goods["logo"]); ?>" alt="" /></a>  <strong><a href="<?php echo U('Index/goods',['id'=>$goods['id']]);?>"><?php echo ($goods["name"]); ?></a></strong></td>
+					<td class="col3">￥<span><?php echo ($goods["shop_price"]); ?></span></td>
 					<td class="col4"> 
 						<a href="javascript:;" class="reduce_num"></a>
-						<input type="text" name="amount" value="1" class="amount"/>
+						<input type="text" name="amount" value="<?php echo ($goods["amount"]); ?>" class="amount"/>
 						<a href="javascript:;" class="add_num"></a>
 					</td>
-					<td class="col5">￥<span>499.00</span></td>
-					<td class="col6"><a href="">删除</a></td>
-				</tr>
-				<tr>
-					<td class="col1"><a href=""><img src="http://www.shop.com/Public/images/cart_goods2.jpg" alt="" /></a> <strong><a href="">九牧王王正品新款时尚休闲中长款茄克EK01357200</a></strong></td>
-					<td class="col3">￥<span>1102.00</span></td>
-					<td class="col4"> 
-						<a href="javascript:;" class="reduce_num"></a>
-						<input type="text" name="amount" value="1" class="amount"/>
-						<a href="javascript:;" class="add_num"></a>
-					</td>
-					<td class="col5">￥<span>1102.00</span></td>
-					<td class="col6"><a href="">删除</a></td>
-				</tr>
-				<tr>
-					<td class="col1"><a href=""><img src="http://www.shop.com/Public/images/cart_goods3.jpg" alt="" /></a> <strong><a href="">【1111购物狂欢节】捷王纯手工缝制休闲男鞋大头皮鞋 头层牛</a></strong></td>
-					<td class="col3">￥<span>269.00</span></td>
-					<td class="col4"> 
-						<a href="javascript:;" class="reduce_num"></a>
-						<input type="text" name="amount" value="1" class="amount"/>
-						<a href="javascript:;" class="add_num"></a>
-					</td>
-					<td class="col5">￥<span>269.00</span></td>
-					<td class="col6"><a href="">删除</a></td>
-				</tr>
+					<td class="col5">￥<span><?php echo ($goods["sub_total"]); ?></span></td>
+					<td class="col6"><a href="<?php echo U('ShopCar/deleteCar',['id'=>$goods['id']]);?>">删除</a></td>
+				</tr><?php endforeach; endif; ?>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="6">购物金额总计： <strong>￥ <span id="total">1870.00</span></strong></td>
+					<td colspan="6">购物金额总计： <strong>￥ <span id="total"><?php echo ($total_price); ?></span></strong></td>
 				</tr>
 			</tfoot>
 		</table>
 		<div class="cart_btn w990 bc mt10">
-			<a href="" class="continue">继续购物</a>
-			<a href="" class="checkout">结 算</a>
+			<a href="<?php echo U('Index/index');?>" class="continue">继续购物</a>
+			<a href="<?php echo U('flow2');?>" class="checkout">结 算</a>
 		</div>
 	</div>
 	
@@ -146,6 +125,19 @@
 
 	<script type="text/javascript" src="http://www.shop.com/Public/js/jquery.min.js"></script>
 	<script type="text/javascript" src="http://www.shop.com/Public/js/cart1.js"></script>
+	<script>
+		$(function(){
+			$('.add_num').click(function(){
+				var aa= $(this).prev().val();
+				console.log(aa);
+			});
+
+			$('.reduce_num').click(function(){
+				var aa= $(this).next().val();
+				console.log(aa);
+			});
+		});
+	</script>
 
 <script>
     //    您好<?php echo ($userinfo["username"]); ?>，欢迎来到京西！[<a href="<?php echo U('Member/login');?>">登录</a>] [<a href="<?php echo U('Member/reg');?>">免费注册</a>]

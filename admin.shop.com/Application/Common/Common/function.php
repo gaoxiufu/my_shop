@@ -82,8 +82,8 @@ function sendMail($email,$subject,$content)
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.126.com';  //填写发送邮件的服务器地址
     $mail->SMTPAuth = true;                               // 使用smtp验证
-    $mail->Username = 'kunx_edu@126.com';                 // 发件人账号名
-    $mail->Password = 'iam4ge';                           // 密码
+    $mail->Username = 'aimafandehen@126.com';                 // 发件人账号名
+    $mail->Password = '010203gao';                           // 密码
     $mail->SMTPSecure = 'ssl';                            // 使用协议,具体是什么根据你的邮件服务商来确定
     $mail->Port = 465;                                    // 使用的端口
 

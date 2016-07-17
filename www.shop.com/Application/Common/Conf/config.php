@@ -71,8 +71,8 @@ return array(
     // 设置cookie前缀
     'COOKIE_PREFIX'     => 'www_shop_com_',
     //Redis Session配置
-    'SESSION_AUTO_START' => true,    // 是否自动开启Session
-    'SESSION_TYPE' => 'Redis',    //session类型
+//    'SESSION_AUTO_START' => true,    // 是否自动开启Session
+//    'SESSION_TYPE' => 'Redis',    //session类型
     'SESSION_PERSISTENT' => 1,        //是否长连接(对于php来说0和1都一样)
     'SESSION_CACHE_TIME' => 1,        //连接超时时间(秒)
     'SESSION_EXPIRE' => 0,        //session有效期(单位:秒) 0表示永久缓存
@@ -93,8 +93,8 @@ return array(
         //'静态地址' => '静态规则',
     ),
     // redis配置
-    'DATA_CACHE_TYPE'=>'Redis',
-    'REDIS_HOST'=>'127.0.0.1',
-    'REDIS_PORT'=>6379,
+//    'DATA_CACHE_TYPE'=>'Redis',
+//    'REDIS_HOST'=>'127.0.0.1',
+//    'REDIS_PORT'=>6379,
 
 );

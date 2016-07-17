@@ -10,3 +10,12 @@ ERR: 非法操作:mail
 [ 2016-07-14T21:57:54+08:00 ] 127.0.0.1 /Test/email
 ERR: 非法操作:email
 
+[ 2016-07-14T22:18:01+08:00 ] 127.0.0.1 /Test/cssearch
+ERR: 非法操作:cssearch
+
+[ 2016-07-14T22:18:08+08:00 ] 127.0.0.1 /Test/cssearch
+ERR: 非法操作:cssearch
+
+[ 2016-07-14T22:52:17+08:00 ] 127.0.0.1 /Test/cssearch
+ERR: 非法操作:cssearch
+

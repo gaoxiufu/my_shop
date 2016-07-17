@@ -27,7 +27,7 @@
             <ul>
                 <li id="userinfo"></li>
                 <li class="line">|</li>
-                <li>我的订单</li>
+                <li><a href="<?php echo U('OrderInfo/index');?>">我的订单</a></li>
                 <li class="line">|</li>
                 <li>客户服务</li>
 
@@ -48,8 +48,9 @@
         <div class="search fl">
             <div class="search_form">
                 <div class="form_left fl"></div>
-                <form action="" name="serarch" method="get" class="fl">
-                    <input type="text" class="txt" value="请输入商品关键字"/><input type="submit" class="btn" value="搜索"/>
+                <form action="<?php echo U('Test/coreseek');?>" name="serarch" method="get" class="fl">
+                    <input type="text" class="txt" value="请输入商品关键字" name='name' />
+                    <input type="submit"  class="btn" value="搜索"/>
                 </form>
                 <div class="form_right fl"></div>
             </div>
@@ -81,8 +82,8 @@
                     <div class="uclist mt10">
                         <ul class="list1 fl">
                             <li><a href="">用户信息></a></li>
-                            <li><a href="">我的订单></a></li>
-                            <li><a href="">收货地址></a></li>
+                            <li><a href="<?php echo U('OrderInfo/index');?>">我的订单></a></li>
+                            <li><a href="<?php echo U('Index/location');?>">收货地址></a></li>
                             <li><a href="">我的收藏></a></li>
                         </ul>
 
